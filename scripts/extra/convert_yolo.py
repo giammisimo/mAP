@@ -1,7 +1,7 @@
 import sys
 import os
 import glob
-import cv2
+from PIL import Image
 import argparse
 
 def convert_yolo_coordinates_to_voc(x_c_n, y_c_n, width_n, height_n, img_width, img_height):
@@ -46,13 +46,11 @@ if len(files) == 0:
 
 for txt_file in files:
     basename = txt_file.removesuffix('.txt')
-    print(basename)
     
     for image_name in os.listdir(args.images):
         if image_name.startswith(basename):
-            print(image_name)
-            img = cv2.imread(args.images + '/' + image_name)
-            img_height, img_width = img.shape[:2]
+            img = Image.open(args.images + '/' + image_name)
+            img_width, img_height = img.size
             break
     else:
         ## image not found
